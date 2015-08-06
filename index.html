@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Raspim</title>
+
+    <!-- Bootstrap Core CSS -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <style>
+    body {
+        padding-top: 70px;
+        /* Required padding for .navbar-fixed-top. Remove if using .navbar-static-top. Change if height of navigation changes. */
+    }
+/*
+#controls, #images{
+  box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+}
+
+#wrapper {
+    width: 500px;
+    border: 1px solid black;
+    position:relative;
+}
+
+#controls {
+    width:50%;
+    border: 1px solid red;
+    display:inline-block;
+}
+
+#images {
+    width:50%;
+    border: 1px solid green;
+    display:inline-block;
+}
+*/
+    </style>
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+<script language="javascript" type="text/javascript">
+		function play_images() {
+			if(play==1)
+				play=0;
+			else 
+				play = 1;
+		}
+		function pause_images() {
+			play = 0;
+		}
+		function playing() {
+			setTimeout(playing, 1000);
+			if(play == 0) return;
+			next = pos +1;
+			if(pos==19) {
+				next = 7;
+				play = 0;
+			}
+			document.getElementById("image_" + next).style.display="block";
+			document.getElementById("image_" + pos).style.display="none";
+			pos ++;
+		}
+
+		var pos = 7;
+		var play = 0;
+		function page_load() {
+			/*var arr = ["list", "items", "here"];
+			$("div").append("<ul></ul>");
+			for(var i in arr) {
+			    var li = "<li>";
+			    $("ul").append(li.concat(arr[i]))
+			}*/
+
+			var filename= "";	
+			var prefix = "wstar_bsratio.curr.";
+			var suffix = "00lst.d2.png";
+			var theDiv = document.getElementById("images");
+			for(x=7; x < 20; x++) {
+				var y = x
+				if(x < 10)
+					y = "0"+ x;
+				filename = prefix + y + suffix;
+				content = "<img src='images/" + filename + "' alt='0700' id='image_" + x + "' style='display:none;width:100%;height:100%;'>";
+				theDiv.innerHTML += content;
+			}
+			document.getElementById("image_" + pos).style.display="block";
+			setTimeout(playing, 1);
+		}
+	</script>
+</head>
+
+<body onload="page_load();">
+
+    <!-- Navigation -->
+    <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+        <div class="container">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="#">Start</a>
+            </div>
+            <!-- Collect the nav links, forms, and other content for toggling 
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav">
+                    <li>
+                        <a href="#">About</a>
+                    </li>
+                    <li>
+                        <a href="#">Services</a>
+                    </li>
+                    <li>
+                        <a href="#">Contact</a>
+                    </li>
+                </ul>
+            </div>-->
+            <!-- /.navbar-collapse -->
+        </div>
+        <!-- /.container -->
+    </nav>
+
+    <div class="container">
+      <div class="row row-offcanvas row-offcanvas-left">
+        
+        <!-- sidebar -->
+<!--
+        <div class="col-xs-6 col-sm-3 sidebar-offcanvas" id="sidebar" role="navigation">
+            <ul class="nav">
+              <li class="active"><a href="#">Home</a></li>
+              <li><a href="#">Link 1</a></li>
+              <li><a href="#">Link 2</a></li>
+              <li><a href="#">Link 3</a></li>   
+              <li><a href="#" data-toggle="collapse" data-target="#sub1">Link 4 (submenu)</a>
+                <ul class="nav collapse" id="sub1">
+                  <li><a href="#">Sub Link 1</a></li>
+                  <li><a href="#">Sub Link 2</a></li>
+                  <li><a href="#">Sub Link 3</a></li>
+                </ul>
+              </li>
+              <li><a href="#">Link 5</a></li>   
+            </ul>
+        </div>
+-->
+  	
+        <!-- main area -->
+        <div class="col-xs-12 col-sm-9">
+
+	<div id="controls" class="col-xs"> 
+		<button onclick="play_images()" id="playButton" type="button" class="btn btn-default btn-xs">
+			<span class="glyphicon glyphicon-play"></span>
+		</button>
+		<button onclick="pause_images()" id="pauseButton" type="button" class="btn btn-default btn-xs">
+			<span class="glyphicon glyphicon-pause"></span>
+		</button>
+	</div>
+
+
+	<div class="col-xs" id="images"> 
+	</div>
+	</div>
+          
+        </div><!-- /.col-xs-12 main -->
+    </div><!--/.row-->
+  </div><!--/.container-->
+
+    <!-- jQuery Version 1.11.1 -->
+    <script src="js/jquery.js"></script>
+
+    <!-- Bootstrap Core JavaScript -->
+    <script src="js/bootstrap.min.js"></script>
+
+</body>
+
+</html>
