@@ -1,12 +1,15 @@
+#!/usr/bin/python3
 # Python 3 code
 import urllib.request, urllib.parse, urllib.error
  
 url = 'http://rasp.linta.de/GERMANY/'
 suffix = '00lst.d2.png'
 
-prefixes = ["wstar_bsratio", "wstar", "sfctemp", "sfcsun", "sfcsunpct", "sfcshf", "dbl", "hbl", "hwcrit", "dwcrit", "bltopvariab", "bsratio",
-		"zsfclcldif", "zsfclcl", "zsfclclmask", "zblcldif", "zblcl", "zblclmask", "blcloudpct", "sfcdewpt", "cape", "rain1", "rain3",
-		"sounding1", "sounding2", "sounding3", "sounding4", "sounding5", "sounding6", "sounding7", "sounding8", "sounding9"]
+#prefixes = ["wstar_bsratio", "wstar", "sfctemp", "sfcsun", "sfcsunpct", "sfcshf", "dbl", "hbl", "hwcrit", "dwcrit", "bltopvariab", "bsratio",
+#		"zsfclcldif", "zsfclcl", "zsfclclmask", "zblcldif", "zblcl", "zblclmask", "blcloudpct", "sfcdewpt", "cape", "rain1", "rain3",
+#		"sounding1", "sounding2", "sounding3", "sounding4", "sounding5", "sounding6", "sounding7", "sounding8", "sounding9"]
+#
+prefixes = ["wstar_bsratio", "wstar", "zblcldif", "zsfclcldif", "hwcrit", "sfcsunpct"]
 
 def download(prefix):
 	for x in range(7,20):

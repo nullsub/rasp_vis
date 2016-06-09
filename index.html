@@ -2,6 +2,27 @@
 <html lang="en">
 
 <head>
+	<link rel="shortcut icon" href="/favicon.ico">
+	<link rel="icon" sizes="16x16 32x32 64x64" href="/favicon.ico">
+	<link rel="icon" type="image/png" sizes="196x196" href="/favicon-192.png">
+	<link rel="icon" type="image/png" sizes="160x160" href="/favicon-160.png">
+	<link rel="icon" type="image/png" sizes="96x96" href="/favicon-96.png">
+	<link rel="icon" type="image/png" sizes="64x64" href="/favicon-64.png">
+	<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png">
+	<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16.png">
+	<link rel="apple-touch-icon" href="/favicon-57.png">
+	<link rel="apple-touch-icon" sizes="114x114" href="/favicon-114.png">
+	<link rel="apple-touch-icon" sizes="72x72" href="/favicon-72.png">
+	<link rel="apple-touch-icon" sizes="144x144" href="/favicon-144.png">
+	<link rel="apple-touch-icon" sizes="60x60" href="/favicon-60.png">
+	<link rel="apple-touch-icon" sizes="120x120" href="/favicon-120.png">
+	<link rel="apple-touch-icon" sizes="76x76" href="/favicon-76.png">
+	<link rel="apple-touch-icon" sizes="152x152" href="/favicon-152.png">
+	<link rel="apple-touch-icon" sizes="180x180" href="/favicon-180.png">
+	<meta name="msapplication-TileColor" content="#FFFFFF">
+	<meta name="msapplication-TileImage" content="/favicon-144.png">
+	<meta name="msapplication-config" content="/browserconfig.xml">
+
 
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -13,6 +34,8 @@
 
     <!-- Bootstrap Core CSS -->
     <link href="css/bootstrap.min.css" rel="stylesheet">
+
+<link rel="stylesheet" type="text/css" href="jquery-time-slider/jquery.time.slider.css" />
 
     <!-- Custom CSS -->
     <style>
@@ -54,7 +77,27 @@
         <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
 
+    <!-- jQuery Version 1.11.1 -->
+    <script src="js/jquery.js"></script>
+<script type="text/javascript" src="jquery-time-slider/jquery.time.slider.js"></script>
+
+    <!-- Bootstrap Core JavaScript -->
+    <script src="js/bootstrap.min.js"></script>
+
+
 <script language="javascript" type="text/javascript">
+$(document).ready(function()
+{
+	$('div').on("click", ".zoom", function () {
+		$(this).toggleClass( "col-md-9" );
+		$(this).toggleClass( "col-md-4" );
+		$('body').animate({
+			scrollTop: $(this).offset().top - 100
+		}, 0);
+
+	});
+});
+
 		function play_images() {
 			if(play==1)
 				play=0;
@@ -65,8 +108,10 @@
 			play = 0;
 		}
 		function playing() {
-			setTimeout(playing, 1000);
-			if(play == 0) return;
+			if(play == 0) {
+				setTimeout(playing, 100);
+				return;
+			}
 			next = pos +1;
 			if(pos==19) {
 				next = 7;
@@ -74,7 +119,8 @@
 			}
 			document.getElementById("image_" + next).style.display="block";
 			document.getElementById("image_" + pos).style.display="none";
-			pos ++;
+			pos = next;
+			setTimeout(playing, 1000);
 		}
 
 		var pos = 7;
@@ -87,19 +133,25 @@
 			    $("ul").append(li.concat(arr[i]))
 			}*/
 
-			var filename= "";	
-			var prefix = "wstar_bsratio.curr.";
-			var suffix = "00lst.d2.png";
-			var theDiv = document.getElementById("images");
-			for(x=7; x < 20; x++) {
-				var y = x
-				if(x < 10)
-					y = "0"+ x;
-				filename = prefix + y + suffix;
-				content = "<img src='images/" + filename + "' alt='0700' id='image_" + x + "' style='display:none;width:100%;height:100%;'>";
-				theDiv.innerHTML += content;
+			var prefixes = ["wstar_bsratio", "wstar", "zblcldif", "zsfclcldif", "hwcrit", "sfcsunpct"];
+			for(var prefix in prefixes) {
+				var day = [".curr.", ".curr+1."];
+				for(i = 0; i < 2; i ++) {
+					var theDiv = document.getElementById("images" + i);
+					var divname = prefix + '_' + day[i];
+					theDiv.innerHTML += '<div class="zoom col-md-4" id="'+ divname + '"></div>';
+					theDiv = document.getElementById(divname);
+					for(x=7; x < 20; x++) {
+						var y = x
+						if(x < 10)
+							y = "0"+ x;
+						filename = prefixes[prefix] + day[i]+ y + "00lst.d2.png";
+						content = "<img src='images/" + filename + "' alt='0700' id='image_" + prefix + "_" + x + "_" + i + "' style='display:none;width:100%;height:100%;'>";
+						theDiv.innerHTML += content;
+					}
+					document.getElementById("image_" + prefix + "_" + pos + "_" + i).style.display="block";
+				}
 			}
-			document.getElementById("image_" + pos).style.display="block";
 			setTimeout(playing, 1);
 		}
 	</script>
@@ -118,7 +170,8 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="#">Start</a>
+                <a class="navbar-brand" href="#heute">Heute</a>
+                <a class="navbar-brand" href="#morgen">Morgen</a>
             </div>
             <!-- Collect the nav links, forms, and other content for toggling 
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
@@ -142,53 +195,29 @@
     <div class="container">
       <div class="row row-offcanvas row-offcanvas-left">
         
-        <!-- sidebar -->
-<!--
-        <div class="col-xs-6 col-sm-3 sidebar-offcanvas" id="sidebar" role="navigation">
-            <ul class="nav">
-              <li class="active"><a href="#">Home</a></li>
-              <li><a href="#">Link 1</a></li>
-              <li><a href="#">Link 2</a></li>
-              <li><a href="#">Link 3</a></li>   
-              <li><a href="#" data-toggle="collapse" data-target="#sub1">Link 4 (submenu)</a>
-                <ul class="nav collapse" id="sub1">
-                  <li><a href="#">Sub Link 1</a></li>
-                  <li><a href="#">Sub Link 2</a></li>
-                  <li><a href="#">Sub Link 3</a></li>
-                </ul>
-              </li>
-              <li><a href="#">Link 5</a></li>   
-            </ul>
-        </div>
+        <!-- main area 
+        <div class="col-xs-12 col-sm-9 text-center">
+		<div id="controls" class="col-xs"> 
+			<button onclick="play_images()" id="playButton" type="button" class="btn btn-default btn-xs">
+				<span class="glyphicon glyphicon-play"></span>
+			</button>
+			<button onclick="pause_images()" id="pauseButton" type="button" class="btn btn-default btn-xs">
+				<span class="glyphicon glyphicon-pause"></span>
+			</button>
+		</div>
+	</div>
 -->
-  	
-        <!-- main area -->
-        <div class="col-xs-12 col-sm-9">
 
-	<div id="controls" class="col-xs"> 
-		<button onclick="play_images()" id="playButton" type="button" class="btn btn-default btn-xs">
-			<span class="glyphicon glyphicon-play"></span>
-		</button>
-		<button onclick="pause_images()" id="pauseButton" type="button" class="btn btn-default btn-xs">
-			<span class="glyphicon glyphicon-pause"></span>
-		</button>
+	<h2 id="heute">Heute</h2>
+	<div class="row" id="images0"> 
 	</div>
 
-
-	<div class="col-xs" id="images"> 
-	</div>
+	<h2 id="morgen">Morgen</h2>
+	<div class="row" id="images1"> 
 	</div>
           
-        </div><!-- /.col-xs-12 main -->
     </div><!--/.row-->
   </div><!--/.container-->
 
-    <!-- jQuery Version 1.11.1 -->
-    <script src="js/jquery.js"></script>
-
-    <!-- Bootstrap Core JavaScript -->
-    <script src="js/bootstrap.min.js"></script>
-
 </body>
-
 </html>
